@@ -1,0 +1,86 @@
+
+<div class="container">
+    <div class="cart_inner">
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Product</th>
+                        <th scope="col">Price</th>
+                        <th scope="col">Quantity</th>
+                        <th scope="col">Total</th>
+                        <th scope="col">Remove</th>
+                    </tr>
+                </thead>
+                {% if cart_data %}
+                <tbody>
+                    {% for product_id,item in cart_data.items %}
+                    <tr>
+                        <td>
+                            <div class="media">
+                                <a href="{{item.product_url}}">
+                                    <div class="d-flex">
+                                        <img src="{{item.image}}" alt="product image" />
+                                    </div>
+                                </a>
+                                <div class="media-body">
+                                    <a href="{{item.product_url}}">
+                                        <p>{{item.title}}</p>
+                                    </a>
+                                    <span><b>size:</b>{{ item.product_size }}</span> <br>
+                                    <span><b>colour:</b>{{ item.product_colour }}</span>
+                                </div>
+                            </div>
+                        </td>
+                        
+                        <td>
+                            <h5>${{item.price}} 
+                            {% if item.price != item.or_price %}
+                            <small style="text-decoration: Line-Through !important">${{item.or_price}}</small></h5>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <div class="product_count">
+                                <a style="color: black !important;" ><span class="input-number-decrement dec-item" data-item="{{product_id}}" data-url="{% url 'decrease_cart' %}"> <i class="ti-minus"></i></span></a>
+                                <input class="input-" readonly type="text" id="cart_qty" value="{{item.qty}}" min="0" max="10"><br>
+                                <a style="color: black !important;" ><span class="input-number-increment incr-item" data-item="{{product_id}}" data-url="{% url 'increase_cart' %}"><i class="ti-plus"></i></span></a>
+                            </div>
+                        </td>
+                        <td>
+                            <h5 id="cart_item_total">${% widthratio item.price 1 item.qty %}</h5>
+                        </td>
+                        <td>
+                            <a style="color: black !important;" href="" ><span class="btn delete-item" data-item="{{product_id}}" data-url="{% url 'remove_cart'%}"><i class="fas fa-trash"></i></span></a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td>
+                            <h5>Total</h5>
+                        </td>
+                        <td>
+                            <h5>${{total}}</h5>
+                        </td>
+                    </tr>
+                </tbody>
+                {% endif %}
+            </table>
+            
+            {% if cart_data %}
+                <div class="checkout_btn_inner float-right">
+                <a class="btn" href="{% url 'products' %}">Continue Shopping</a>
+                <a class="btn checkout_btn" href="{% url 'checkout' %}">Proceed to checkout</a>
+            </div>
+            {% else %}
+                <h3>Your cart is empty.</h3>
+            <div class="checkout_btn_inner text-center">
+                <a class="btn" href="{% url 'products' %}">Continue Shopping</a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>

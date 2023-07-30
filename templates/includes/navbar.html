@@ -1,0 +1,103 @@
+{% load static %}
+<!--====================  header area ====================-->
+
+<!-- <div id="preloader-active" >
+    <div class="preloader d-flex align-items-center justify-content-center">
+    <div class="preloader-inner position-relative">
+    <div class="preloader-circle"></div>
+    <div class="preloader-img pere-text">
+    <img src="{% static 'img/logo/loder.png' %}" alt="">
+    </div>
+    </div>
+    </div>
+    </div> -->
+
+<header>
+
+    <div class="header-area">
+        <div class="main-header header-sticky">
+            <div class="container-fluid">
+                <div class="row menu-wrapper align-items-center justify-content-between">
+                    <div class="header-left d-flex align-items-center">
+
+                        <div class="logo">
+                            <a href="{% url 'home' %}"><img src="{% static 'img/logo/logo.png' %}" alt=""></a>
+                        </div>
+
+                        <div class="logo2">
+                            <a href="{% url 'home' %}"><img src="{% static 'img/logo/logo2.png' %}" alt=""></a>
+                        </div>
+
+                        <div class="main-menu  d-none d-lg-block">
+                            <nav>
+                                <ul id="navigation">
+                                    <li><a href="{% url 'home' %}">Home</a></li>
+                                    <li><a href="{% url 'products' %}">Product</a></li>
+                                    <li><a href="{% url 'product_by_categories' %}">Categories</a></li>
+                                    <li><a href="{% url 'about' %}">About</a></li>
+                                    <!-- <li><a href="#">Page</a>
+                                        <ul class="submenu">
+                                            <li><a href="{% url 'login' %}">Login</a></li>
+                                            <li><a href="card.html">Card</a></li>
+                                            <li><a href="categories.html">Categories</a></li>
+                                            <li><a href="checkout.html">Checkout</a></li>
+                                            <li><a href="product_details.html">Product Details</a></li>
+                                        </ul>
+                                    </li> 
+                                    <li><a href="blog.html">Blog</a>
+                                        <ul class="submenu">
+                                            <li><a href="blog.html">Blog</a></li>
+                                            <li><a href="blog_details.html">Blog Details</a></li>
+                                            <li><a href="elements.html">Elements</a></li>
+                                        </ul>
+                                    </li>-->
+                                    <li><a href="{% url 'contact' %}">Contact</a></li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                    <div class="header-right1 d-flex align-items-center">
+                        <div class="search">
+                            <ul class="d-flex align-items-center">
+                                <li>
+
+                                    <form action="{% url 'search' %}" class="form-box f-right ">
+                                        <input type="text" name="query"  placeholder="Search products">
+                                        <div class="search-icon">
+                                            <button style="border: hidden; background: transparent;" type="submit"><i class="ti-search"></i></button>
+                                        </div>
+                                    </form>
+                                </li>
+
+                                {% if request.user.is_authenticated %}
+                                <li>
+                                    <a href="{% url 'dashboard' %}" class="account-btn">My Account</a>
+                                    <a href="{% url 'logout' %}" class="account-btn">Logout</a>
+                                </li>
+                                {% else %}
+                                <li>
+                                    <a href="{% url 'registerUser' %}" class="account-btn">Register</a> &nbsp;
+                                    <a href="{% url 'login' %}" class="account-btn">Login</a>
+                                </li>
+                                {% endif %}
+
+                                <div class="card-stor">
+                                    <a href="{% url 'cart' %}">
+                                        <img src="{% static 'img/icon/card.svg' %}" alt="">
+                                        <span class='total-cart'>{{request.session.cartdata|length}}</span>
+                                    </a>
+                                </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="col-12">
+                        <div class="mobile_menu d-block d-lg-none"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</header>

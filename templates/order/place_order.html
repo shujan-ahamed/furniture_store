@@ -1,0 +1,231 @@
+{% extends 'base.html' %}
+{% block content %} {% load static %}
+{% include 'includes/navbar.html' %}
+
+<main>
+  <div class="slider-area">
+    <div class="slider-active">
+      <div
+        class="single-slider hero-overly2 slider-height2 d-flex align-items-center slider-bg2"
+      >
+        <div class="container">
+          <div class="row">
+            <div class="col-xl-6 col-lg-8 col-md-8">
+              <div class="hero__caption hero__caption2">
+                <h1 data-animation="fadeInUp" data-delay=".4s">
+                  Confirm Order
+                </h1>
+                <nav aria-label="breadcrumb">
+                  <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                      <a href="{% url 'home' %}">Home</a>
+                    </li>
+                    <li class="breadcrumb-item"><a href="#">checkout</a></li>
+                  </ol>
+                </nav>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <section class="checkout_area section-padding40">
+    <div class="container">
+      <div class="billing_details">
+        <div class="row">
+          <div class="col-lg-8">
+            <h3>Billing Details</h3>
+            <div class="">
+              <div><b>Name: </b>{{ order.full_name }}</div>
+              <div><b>Adress:</b> {{ order.full_address }}</div>
+              <div>{{ order.city }} - {{ order.pin_code }}</div>
+              <div>{{ order.state }}, {{ order.country }}</div>
+              <div><b>Phone: </b>{{ order.phone }}</div>
+              <div><b>Email: </b>{{ order.email }}</div>
+              <div><b>Payment: </b>{{ order.payment_method }}</div>
+              <div><b>Note: </b>{{ order.order_note }}</div>
+              <br />
+              <div>
+                <a href="{% url 'checkout' %}" class="btn"
+                  >Edit</a
+                >
+              </div>
+              <br />
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <div class="order_box">
+              <h2>Your Order</h2>
+
+              <ul class="list">
+                <li>
+                  <a href="#">Product<span>Total</span> </a>
+                </li>
+                {% if cart_data %}
+                {% for product_id,item in cart_data.items %}
+                <li>
+                  <a href="#">
+                    <img
+                        src="{{ item.image}}"
+                        width="50"
+                        alt="Food Image"
+                      />
+                    {{item.title}}(${{item.price}}) 
+                    {% comment %} <br>
+                    <span><b>size:</b>{{ item.product_size }}</span> 
+                    <span><b>colour:</b>{{ item.product_colour }}</span>
+                    <br> {% endcomment %}
+                    <span class="middle">x {{item.qty}}</span>
+                    <span class="last">${% widthratio item.price 1 item.qty %}</span>
+                  </a>
+                </li>
+                {% endfor %}
+                {% endif %}
+              </ul>
+              <hr>
+              <ul class="list list_2">
+                <li>
+                  <a href="#">Subtotal <span>${{sub_total}}</span></a>
+                </li>
+                <li>
+                {% if order.coupon %}
+                <a href="#">{{order.coupon.code}} Coupon {{order.coupon.discount}}% off<span>-${{order.discount}}</span></a>
+                <a href="#">Total<span>${{dis_sub_total}}</span></a>
+                <hr>
+                {% endif %}
+                </li>
+                <li>
+                  {% if tax_dict %}
+                    {% for key, value in tax_dict.items %}
+                      {% for i, j  in value.items %}
+                        <a href="#">{{key}} ({{i}}%)<span>${{j}}</span></a>
+                      {% endfor %}
+                    {% endfor %}
+                  {% endif %}
+                </li>
+                <li>
+                  <a href="#">Total Tax<span>${{total_tax}}</span></a>
+                </li>
+                <li>
+                  <a href="#"
+                    >Shipping Method
+                    <span>{{order.shipping_method}}</span>
+                  </a>
+                </li>
+                <li>
+                  <a href="#"
+                    >Shipping Cost
+                    <span>${{order.shipping_cost}}</span>
+                  </a>
+                </li>
+                <li>
+                  <a href="#">Total<span>${{grand_total}}</span> </a>
+                </li>
+              </ul>
+              
+              <div id="paypal-button-container"></div>
+              {% comment %} <button class="btn w-100" type="submit">Place Order</button> {% endcomment %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {% include 'includes/footer.html' %}
+
+
+  
+<!-- Set up a container element for the button -->
+<script>
+  function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+  }
+
+  var grand_total = "{{ grand_total }}"
+  var url = "{% url 'payment' %}"
+  var order_number = "{{order.order_number}}"
+  const csrftoken = getCookie('csrftoken');
+  var order_complete = "{% url 'order_complete' %}"
+
+
+  paypal.Buttons({
+      style: {
+          layout: 'horizontal',
+          size: 'small',
+          color:  'blue',
+          shape:  'pill',
+          label:  'pay',
+          height: 40,
+          tagline: 'false'
+      },
+  // Sets up the transaction when a payment button is clicked
+  createOrder: (data, actions) => {
+      return actions.order.create({
+      purchase_units: [{
+          amount: {
+          value:'{{grand_total}}'
+          }
+      }]
+      });
+  },
+  // Finalize the transaction after payer approval
+  onApprove: (data, actions) => {
+      return actions.order.capture().then(function(orderData) {
+      // Successful capture! For dev/demo purposes:
+      console.log('Capture result', orderData, JSON.stringify(orderData, null, 2));
+      const transaction = orderData.purchase_units[0].payments.captures[0];
+      console.log(transaction.id)
+      
+      var transaction_id = transaction.id
+      var status = orderData.status
+      var payment_method = 'PayPal'
+
+      sendTransaction(transaction_id, status, payment_method)
+
+      // When ready to go live, remove the alert and show a success message within this page. For example:
+      const element = document.getElementById('paypal-button-container');
+      element.innerHTML = '<h4 class="text-center"> <i class="fa fa-spinner fa-spin"></i> Please wait..</h4>';
+      // Or go to another URL:  actions.redirect('thank_you.html');
+      });
+  }
+  }).render('#paypal-button-container');
+
+  function sendTransaction(transaction_id, status, payment_method) {
+    $.ajax({
+    type: 'POST',
+    url : url,
+    data : {
+        'order_number' : order_number,
+        'transaction_id' : transaction_id,
+        'status' : status,
+        'payment_method' : payment_method,
+        'csrfmiddlewaretoken' : csrftoken,
+    },
+    success: function (response) {
+        console.log('data=>>>>', response)
+        window.location.href = order_complete+'?order_no='+response.order_number+'&transaction_id='+response.transaction_id
+        
+    }
+  });
+  }
+</script>
+  
+</main>
+{% include 'includes/footer.html' %}
+
+{% endblock content %}

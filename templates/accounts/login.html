@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% include 'includes/alerts.html' %}
+
+{% load socialaccount %}
+{% providers_media_js %}
+
+<main class="login-bg">
+
+    <div class="login-form-area">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-xl-7 col-lg-8">
+                    <div class="login-form">
+                        
+                        <div class="login-heading">
+                            <span>Login</span>
+                            <p>Enter Login details to get access</p>
+                        </div>
+                        <form action="{% url 'login' %}" method="POST">
+                            {% csrf_token %}
+                            <div class="input-box">
+                                <div class="single-input-fields">
+                                    <label>Email Address</label>
+                                    <input name="email" type="text" placeholder="Username / Email address">
+                                </div>
+                                <div class="single-input-fields">
+                                    <label>Password</label>
+                                    <input name="password" type="password" placeholder="Enter Password">
+                                </div>
+                                <div class="single-input-fields login-check">
+                                    <input type="checkbox" id="fruit1" name="keep-log">
+                                    <label for="fruit1">Keep me logged in</label>
+                                    <a href="{% url 'forgot_password' %}" class="f-right">Forgot Password?</a>
+                                </div>
+                            </div>
+                            <div class="errors float-left">
+                                <ul class="error_list">
+                                    {% for field in form %}
+                                        {% if field.errors %}
+                                            {% for error in field.errors %}
+                                                <li style="color:red;">{{error}}</li>
+                                            {% endfor %}
+                                        {% endif %}
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                                                    
+                        <div class="contact-section-furnitureX">
+                            <div class="form-section">
+                                <div class="extra-login clearfix">
+                                    <span>Or Login With</span>
+                                </div>
+                                <div class="clearfix"></div>
+                                <ul class="social-list text-center">
+                                    {% comment %} <li><a href="{% provider_login_url 'facebook' method='oauth2' %}" class="facebook-bg"><i class="ti-facebook"></i><span>Facebook</span></a></li> {% endcomment %}
+                                    <li><a href="{% provider_login_url 'facebook' method='js_sdk' %}" class="facebook-bg"><i class="ti-facebook"></i><span>Facebook</span></a></li>
+                                    <li><a href="{% provider_login_url 'google' method='oauth2'%}" class="google-bg"><i class="fa fa-google google-i"></i><span>Google</span></a></li>
+                                </ul>
+
+                                <div class="login-footer">
+                                    <p>Don’t have an account? <a href="{% url 'registerUser' %}">Sign Up</a> here</p>
+                                    <button type="submit" class="submit-btn3">Login</button>
+                                </div>
+                            </div>
+                        </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</main>
+
+
+{% endblock content %}

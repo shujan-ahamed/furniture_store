@@ -1,0 +1,404 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+{% load custom_filters %}
+
+{% include 'includes/navbar.html' %}
+
+<main>
+  <div class="slider-area">
+    <div class="slider-active">
+      <div
+        class="single-slider hero-overly2 slider-height2 d-flex align-items-center slider-bg2"
+      >
+        <div class="container">
+          <div class="row">
+            <div class="col-xl-6 col-lg-8 col-md-8">
+              <div class="hero__caption hero__caption2">
+                <h1 data-animation="fadeInUp" data-delay=".4s">Checkout</h1>
+                <nav aria-label="breadcrumb">
+                  <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                      <a href="{% url 'home' %}">Home</a>
+                    </li>
+                    <li class="breadcrumb-item"><a href="#">checkout</a></li>
+                  </ol>
+                </nav>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <section class="checkout_area section-padding40">
+    <div class="container">
+      {% comment %} <div class="returning_customer">
+        <div class="check_title">
+          <h2>
+            Returning Customer?
+            <a href="login.html">Click here to login</a>
+          </h2>
+        </div>
+        <p>
+          If you have shopped with us before, please enter your details in the
+          boxes below. If you are a new customer, please proceed to the Billing
+          & Shipping section.
+        </p>
+        <form
+          class="row contact_form"
+          action="#"
+          method="post"
+          novalidate="novalidate"
+        >
+          <div class="col-md-6 form-group p_star">
+            <input
+              type="text"
+              class="form-control"
+              id="name"
+              name="name"
+              value=" "
+            />
+            <span
+              class="placeholder"
+              data-placeholder="Username or Email"
+            ></span>
+          </div>
+          <div class="col-md-6 form-group p_star">
+            <input
+              type="password"
+              class="form-control"
+              id="password"
+              name="password"
+              value=""
+            />
+            <span class="placeholder" data-placeholder="Password"></span>
+          </div>
+          <div class="col-md-12 form-group d-flex flex-wrap">
+            <a href="login.html" value="submit" class="btn"> log in</a>
+            <div class="checkout-cap ml-5">
+              <input type="checkbox" id="fruit01" name="keep-log" />
+              <label for="fruit01">Create an account?</label>
+            </div>
+          </div>
+        </form>
+      </div> {% endcomment %}
+      <div class="cupon_area">
+        <div class="check_title">
+          
+          {% if coupon_id %}
+            
+            {% if is_used %}
+                <h2>
+                  <a>You have already used "{{coupon.code}}" this Coupon.Try another!</a>
+                </h2>
+                <form action= "{% url 'coupon_apply' %}" method='POST'>
+                  {% csrf_token %}
+                  {{coupon_form.as_table}}
+                  <button type='submit' class="btn" >Apply Coupon</button>
+                </form>          
+                
+            {% else %}
+              
+              {% if coupon %}
+                <h2>
+                <a >Congrats you have got {{coupon.discount}}% off on total price with "{{coupon.code}}" Coupon.</a>
+                </h2>
+              {% else %}
+                <h2 class="text-danger">
+                  sorry, this Coupon is expired or doesn't exist.Try another!
+                </h2>
+                <form action= "{% url 'coupon_apply' %}" method='POST'>
+                  {% csrf_token %}
+                  {{coupon_form.as_table}}
+                  <button type='submit' class="btn" >Apply Coupon</button>
+                </form>
+              {% endif %}
+            {% endif %}
+          {% else %}
+            
+            <h2>
+              Have a coupon?
+              <a href="#">Click here to enter your code</a>
+            </h2>
+            <form action= "{% url 'coupon_apply' %}" method='POST'>
+              {% csrf_token %}
+              {{coupon_form.as_table}}
+              <button type='submit' class="btn" >Apply Coupon</button>
+            </form> 
+          
+          {% endif %}
+            
+          
+        </div>
+      </div>
+      <div class="billing_details">
+        <div class="row">
+          <div class="col-lg-7">
+            <h3>Billing Details</h3>
+            <form id="contact_form" class="row contact_form" action="{% url 'place_order' %}" method="POST"  >
+              {% csrf_token %}
+              <div class="col-md-6 form-group p_star">
+                <input
+                  type="text"
+                  class="form-control"
+                  id="first"
+                  name="first_name"
+                  {% if order_form.first_name %}value="{{order_form.first_name.value}}"{% else %}placeholder="First name"{% endif %}
+                />
+                {% comment %} <span class="placeholder" data-placeholder="First name" ></span> {% endcomment %}
+              </div>
+              <div class="col-md-6 form-group p_star">
+                <input type="text" class="form-control" id='last3' name="last_name" {% if order_form.first_name %}value="{{order_form.last_name.value}}"{% else %}placeholder="Last name"{% endif %}/>
+                
+              </div>
+              
+              <div class="col-md-6 form-group p_star">
+                <input
+                  type="text"
+                  class="form-control"
+                  id="number"
+                  name="phone"
+                  {% if order_form.phone %}value="{{order_form.phone.value}}"{% else %}placeholder="Phone"{% endif %}
+                />
+                {% comment %} <span
+                  class="placeholder"
+                  data-placeholder="Phone number"
+                ></span> {% endcomment %}
+              </div>
+              <div class="col-md-6 form-group p_star">
+                <input
+                  type="text"
+                  id="email"
+                  class="form-control"
+                  name="email"
+                  {% if order_form.email %}value="{{order_form.email.value}}"{% else %}placeholder="Email"{% endif %}
+                />
+                {% comment %} <span
+                  class="placeholder"
+                  data-placeholder="Email Address" 
+                ></span> {% endcomment %}
+              </div>
+              
+              <div class="col-md-12 form-group p_star">
+                <input type="text" class="form-control" id="add1" name="address_line_1" required 
+                {% if order_form %}value="{{order_form.address_line_1.value}}"{% else %}placeholder="Address line 01"{% endif %}/>
+                {% comment %} <span
+                  class="placeholder"
+                  data-placeholder="Address line 01"
+                ></span> {% endcomment %}
+              </div>
+              <div class="col-md-12 form-group p_star">
+                <input type="text" class="form-control" id="add2" name="address_line_2" placeholder="Address line 02">
+                
+                {% comment %} <span
+                  class="placeholder"
+                  data-
+                ></span> {% endcomment %}
+              </div>
+
+              <div class="col-md-12 form-group p_star">
+                <input type="text" class="form-control" id="city" name="city"
+                {% if order_form.city %}value="{{order_form.city.value}}"{% else %}placeholder="City"{% endif %}
+                required />
+                {% comment %} <span class="placeholder" data-placeholder="Town/City"></span> {% endcomment %}
+              </div>
+              <div class="col-md-12 form-group p_star">
+                <input type="text" class="form-control" id="state" name="state"
+                {% if order_form.state %}value="{{order_form.state.value}}"{% else %}placeholder="State"{% endif %}
+                required />
+                {% comment %} <span
+                class="placeholder"
+                data-placeholder="state" 
+              ></span> {% endcomment %}
+              </div>
+              <div class="col-md-12 form-group p_star">
+                <input
+                  type="text"
+                  class="form-control"
+                  id="country"
+                  name="country" 
+                  {% if order_form.country %}value="{{order_form.country.value}}"{% else %}placeholder="Phone"{% endif %}
+                />
+                {% comment %} <span
+                  class="placeholder"
+                  data-placeholder="country" 
+                ></span> {% endcomment %}
+              </div>
+              <div class="col-md-12 form-group">
+                <input
+                  type="text"
+                  class="form-control"
+                  id="zip"
+                  name="pin_code"
+                  {% if order_form.pin_code %}value="{{order_form.pin_code.value}}"{% else %}placeholder="Postcode/ZIP"{% endif %}
+                  
+                />
+              </div>
+              {% comment %} <div class="col-md-12 form-group">
+                <div class="checkout-cap">
+                  <input type="checkbox" id="fruit1" name="keep-log" />
+                  <label for="fruit1">Create an account?</label>
+                </div>
+              </div> {% endcomment %}
+              <div class="col-md-12 form-group">
+                {% comment %} <div class="creat_account">
+                  <h3>Shipping Details</h3>
+                  <div class="checkout-cap">
+                    <input type="checkbox" id="f-option3" name="selector" />
+                    <label for="f-option3">Ship to a different address?</label>
+                  </div>
+                </div> {% endcomment %}
+                <textarea
+                  class="form-control"
+                  id="message"
+                  rows="1"
+                  name="order_note"
+                  placeholder="Order Notes"
+                ></textarea>
+              </div>
+          </div>
+          <div class="col-lg-5">
+            <div class="order_box">
+              <h2>Your Order</h2>
+              <ul class="list">
+                <li>
+                  <a href="#">Product<span>Total</span> </a>
+                </li>
+                {% if cart_data %}
+                {% for product_id,item in cart_data.items %}
+                <li>
+                  <a href="#">
+                      <img
+                        src="{{ item.image}}"
+                        width="50"
+                        alt="Food Image"
+                      />
+                    {{item.title}} (${{item.price}})
+                    {% comment %} <small>
+                    (size:</b>{{ item.product_size }};colour:</b>{{ item.product_colour }})
+                    </small> {% endcomment %}
+                    <span class="middle">x {{item.qty}}</span>
+                    <span class="last">${% widthratio item.price 1 item.qty %}</span>
+                  </a>
+                </li>
+                {% endfor %}
+                {% endif %}
+              </ul>
+<ul class="list list_2">
+<li> <hr>
+<a href="#">Subtotal <span>${{sub_total}}</span></a>
+
+{% if coupon %}
+  <a href="#">{{coupon.code}} Coupon {{coupon.discount}}% off<span>-${{discount}}</span></a>
+  <a href="#">Total<span>${{dis_sub_total}}</span></a>
+  <hr>
+{% endif %}
+  
+</li>
+<li>
+  {% if tax_dict %}
+    {% for key, value in tax_dict.items %}
+      {% for i, j  in value.items %}
+        <a href="#">{{key}} ({{i}}%)<span>${{j}}</span></a>
+      {% endfor %}
+    {% endfor %}
+  {% endif %}
+</li>
+<li>
+  <a href="#">Total Tax<span>${{total_tax}}</span></a>
+</li>
+
+<li>{% comment %} {% for ship in shipping %}
+  <a href="#"></a>
+  <form action='' method="">
+  
+  
+  <p>
+    <label>
+      <input name="group1" class="with-gap" type='radio' style="border:2px!important">
+      <span>{{ship.method}} {{ship.delivery_day_min}}days to {{ship.delivery_day_min}} days</span>  &nbsp; &nbsp;
+      <span>${{ship.cost}}</span>
+    </label>
+  </p>  
+  {% endfor %}
+  </form> {% endcomment %}
+  <a href="#">Shipping :</a>
+  {% for ship in shipping %}
+  <li class="shipping">
+    <a  style='border: 2px solid black;padding-left:5px!important' class="ship" id="ship-{{ship.id}}" data-cost="{{ship.id}}" value="" href='#'  data-url="{% url 'checkout' %}">{{ship.method}}<span>${{ship.cost}}</span>
+      <p>Astimate delivery date: <br>
+        {{ date_obj|add_days:ship.delivery_days_min }} to {{ date_obj|add_days:ship.delivery_days_max }}</p>
+    </a>
+  </li><br>
+    {% endfor %}
+</li>
+<li>
+<a href="#" >Grand Total<span class="grand_total">${{grand_total}}</span></a>
+</li>
+</ul>
+{% comment %} <div class="payment_item active">
+<div class="radion_btn">
+<input type="radio" id="f-option6" name="selector" />
+<label for="f-option6">Paypal </label>
+<img src="assets/img/gallery/card.jpg" alt="" />
+<div class="check"></div>
+</div>
+<p> Please send a check to Store Name, Store Street, Store Town, Store State / County, Store Postcode. </p>
+</div> {% endcomment %}
+
+<div class="creat_account checkout-cap">
+<input type="checkbox" id="f-option8" name="selector"  required/>
+<label for="f-option8">I’ve read and accept the <a href="#">terms & conditions*</a> </label>
+</div>
+              <button onclick="validateForm()" class="btn w-100" id="submitButton"  type='submit'>Place Order</button>
+              
+            </div>
+            
+          </form><div id="paypal-button-container"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+<script>
+    // Get the buttons and submit button elements
+    var buttons = document.getElementsByClassName('ship');
+    var submitButton = document.getElementById('submitButton');
+
+    // Array to track clicked buttons
+    var clickedButtons = [];
+
+    // Add click event listeners to buttons
+    for (var i = 0; i < buttons.length; i++) {
+      buttons[i].addEventListener('click', function() {
+        // Add the clicked button to the array
+        if (!clickedButtons.includes(this)) {
+          clickedButtons.push(this);
+        }
+      });
+    }
+
+    // Add click event listener to submit button
+    submitButton.addEventListener('click', function(event) {
+      event.preventDefault(); // Prevent form submission
+
+      // Check if any button has been clicked
+      if (clickedButtons.length > 0) {
+        // Submit the form
+        document.getElementById('contact_form').submit();
+      } else {
+        // Display an error message or take other action
+        Swal.fire({
+          icon: 'error',
+          title: 'Please choose shipping method before placing order.',
+      })
+      }
+    });
+</script>
+
+{% include 'includes/footer.html' %}
+{% endblock content %}
+

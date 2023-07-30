@@ -1,0 +1,226 @@
+{% extends 'base.html' %}
+{% block content %}
+
+{% load static %}
+{% include 'includes/navbar.html' %}
+<main>
+
+    <div class="slider-area ">
+        <div class="slider-active">
+            <div class="single-slider hero-overly1 slider-height d-flex align-items-center slider-bg1">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-xl-6 col-lg-8 col-md-8">
+                            <div class="hero__caption">
+                                <span>70% Sale off </span>
+                                <h1 data-animation="fadeInUp" data-delay=".4s">Furniture at Cost</h1>
+                                <p data-animation="fadeInUp" data-delay=".6s">Suspendisse varius enim in eros elementum
+                                    tristique. Duis cursus, mi quis viverra ornare, eros
+                                    dolor interdum nulla.</p>
+
+                                <div class="hero__btn" data-animation="fadeInUp" data-delay=".7s">
+                                    <a href="{% url 'products' %}" class="btn hero-btn">Discover More</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <section class="properties new-arrival fix">
+        {% include 'includes/alerts.html' %}
+        <div class="p-5">
+
+            <div class="row justify-content-center">
+                <div class="col-xl-7 col-lg-8 col-md-10">
+                    <div class="section-tittle mb-60 text-center wow fadeInUp" data-wow-duration="1s"
+                        data-wow-delay=".2s">
+                        <h2>Popular products</h2>
+                        <P>Suspendisse varius enim in eros elementum tristique. Duis cursus, mi quis viverra ornare,
+                            eros dolor interdum nulla.</P>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row">
+
+                <div class="tab-content" id="nav-tabContent">
+
+                    <div class="tab-pane fade show active " id="nav-Sofa" role="tabpanel" aria-labelledby="nav-Sofa-tab">
+                        <div class="row ">
+                            {% for product in products %}
+                            <div class="col-lg-3 col-md-3 col-sm-3 p-5">
+                                <div class="single-new-arrival mb-50 text-center">
+                                    <div class="popular-img" >
+                                        {% if product.productvariation_set.first.image.url %}
+                                            <a
+                                                href="{% url 'product_detail' product.category.slug product.slug %}">
+                                                
+                                                <img src="{{product.productvariation_set.first.image.url}}"
+                                                alt="product image" style="height: 200px !important; position: relative;">
+                                            </a>
+                                        {% else %}
+                                            <a
+                                                href="{% url 'product_detail' product.category.slug product.slug %}">
+                                                
+                                                <img src="{{product.image.url}}"
+                                                alt="product image" style="height: 200px !important; position: relative;">
+                                            </a>
+                                        
+                                        {% endif %}
+                                        
+                                        
+                                        
+                                    
+                                        </div>
+                                    <div class="popular-caption">
+                                        <h3><a
+                                                href="{% url 'product_detail' product.category.slug product.slug %}">{{product.product_title}}</a>
+                                        </h3>
+                                        {% comment %} <h2><span class="vari-product-price-{{product.id}}">{{product.productvariation_set.first.price}}</span></h2>
+                                         {% endcomment %}
+                                         {% if product.productvariation_set.first.discount_price %}
+                                         {% if product.on_sale %}
+                                         <h2><span class="dis-product-price-{{product.id}}" id="price_to_add_in_cart-{{product.id}}" data-index="{{product.id}}">{{product.productvariation_set.first.discount_price}}</span>
+                                         <span style="text-decoration: Line-Through !important" class="vari-product-price-{{product.id}}" id="vari-product-price" data-index="{{product.id}}" >{{product.productvariation_set.first.price}}</span>
+                                         </h2>
+                                         {% else %}
+                                         <h2><span class="vari-product-price-{{product.id}}" id="price_to_add_in_cart-{{product.id}}" data-index="{{product.id}}">{{product.productvariation_set.first.price}}</span></h2>
+                                         <br>
+                                         {% endif %}
+
+                                         {% else %}
+                                         <h2><span class="vari-product-price-{{product.id}}">{{product.price}}</span></h2>
+                                         <br>
+                                         {% endif %}
+                                         
+                                        <div class="card_area">
+                                            
+                                            <div class="add_to_cart">
+                                                <input type='hidden' class="input-number prdouct_qty-{{product.id}}" type='' value="1" id="prdouct_qty" >
+                                                <input type="hidden" class="product_image-{{product.id}}" value="{{product.productvariation_set.first.image.url}}">
+                                                <input type="hidden" name="" id="product_id-{{product.id}}" value="{{product.id}}">
+                                                <input type="hidden" name="" id="product_url" value="{{request.path}}">
+                                                <input type="hidden" name="" id="product_title-{{product.id}}" value="{{product.product_title}}">
+                                                
+                                                <input type="hidden" name="" id="product_size-{{product.id}}" value="{{product.productvariation_set.first.size}}">
+                                                <input type="hidden" name="" id="product_colour-{{product.id}}" value="{{product.productvariation_set.first.colour}}">
+
+                                                
+                                                <a href="#"  data-url="{% url 'add_cart' product.id %}" data-index="{{product.id}}" id="addToCArtBtn" class="addToCArtBtn btn addToCArtBtn"><i class="fas fa-shopping-cart"></i></a>
+                                                <a href="#" class=" btn" data-url="{% url 'addto_wish_list' product.id %}"  class="like_us" id="wish_list"> <i class="ti-heart"></i> </a>
+
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                            {% comment %} <div class="col-lg-4 col-md-6 col-sm-6">
+                                <div class="single-new-arrival mb-50 text-center">
+                                    <div class="popular-img">
+                                        <img src="assets/img/gallery/popular1.png" alt="">
+                                    </div>
+                                    <div class="popular-caption">
+                                        <h3><a href="product_details.html">Bly Microfiber / Microsuede 56" Armless
+                                                Loveseat</a></h3>
+                                        <span>$367</span>
+                                    </div>
+                                </div>
+                            </div> {% endcomment %}
+                            
+                        </div>
+                    </div>
+
+                    
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+
+    <div class="visit-tailor-area fix">
+
+        <div class="tailor-offers"></div>
+
+        <div class="tailor-details">
+            <h2>Best Furniture<br> manufacturer</h2>
+            <p>Suspendisse varius enim in eros elementum
+                tristique. Duis cursus, mi quis viverra ornare, eros
+                dolor interdum nulla.</p>
+            <p class="pera-bottom">Suspendisse varius enim in eros elementum
+                tristique. Duis cursus, mi quis viverra ornare, eros
+                dolor interdum nulla.</p>
+            <a href="#" class="btn">Discover More</a>
+        </div>
+    </div>
+
+
+    
+
+
+
+    <div class="categories-area section-padding40 gray-bg">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-6 col-sm-6">
+                    <div class="single-cat mb-50 wow fadeInUp" data-wow-duration="1s" data-wow-delay=".2s">
+                        <div class="cat-icon">
+                            <img src="assets/img/icon/services1.svg" alt="">
+                        </div>
+                        <div class="cat-cap">
+                            <h5>Fast & Free Delivery</h5>
+                            <p>Free delivery on all orders</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 col-sm-6">
+                    <div class="single-cat mb-50 wow fadeInUp" data-wow-duration="1s" data-wow-delay=".2s">
+                        <div class="cat-icon">
+                            <img src="assets/img/icon/services2.svg" alt="">
+                        </div>
+                        <div class="cat-cap">
+                            <h5>Secure Payment</h5>
+                            <p>Free delivery on all orders</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 col-sm-6">
+                    <div class="single-cat mb-50 wow fadeInUp" data-wow-duration="1s" data-wow-delay=".4s">
+                        <div class="cat-icon">
+                            <img src="assets/img/icon/services3.svg" alt="">
+                        </div>
+                        <div class="cat-cap">
+                            <h5>Money Back Guarantee</h5>
+                            <p>Free delivery on all orders</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 col-sm-6">
+                    <div class="single-cat mb-50 wow fadeInUp" data-wow-duration="1s" data-wow-delay=".5s">
+                        <div class="cat-icon">
+                            <img src="assets/img/icon/services4.svg" alt="">
+                        </div>
+                        <div class="cat-cap">
+                            <h5>Online Support</h5>
+                            <p>Free delivery on all orders</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</main>
+
+
+
+
+{% include 'includes/footer.html' %}
+
+{% endblock content %}

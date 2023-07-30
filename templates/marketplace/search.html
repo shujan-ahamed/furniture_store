@@ -1,0 +1,136 @@
+{% extends 'base.html' %}
+{% block content %}
+
+{% load static %}
+{% include 'includes/navbar.html' %}
+
+
+
+
+<main>
+
+    <div class="slider-area ">
+        <div class="slider-active">
+            <div class="single-slider hero-overly2  slider-height2 d-flex align-items-center slider-bg2">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-xl-6 col-lg-8 col-md-8">
+                            <div class="hero__caption hero__caption2">
+                                <h1 data-animation="fadeInUp" data-delay=".4s">Products</h1>
+                                <nav aria-label="breadcrumb">
+                                    <ol class="breadcrumb">
+                                        <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+                                        <li class="breadcrumb-item"><a href="#">Products</a></li>
+                                    </ol>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <section class="properties new-arrival fix">
+        <div class="col-xl-10 col-lg-10 col-md-11">
+
+            <div class="row justify-content-center">
+                <div class="col-xl-7 col-lg-8 col-md-10">
+                    <div class="section-tittle mb-60 text-center wow fadeInUp" data-wow-duration="1s"
+                        data-wow-delay=".2s">
+                        <h2>Search results for {{request.GET.query}}</h2>
+                        <P></P>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                {% if products %}
+                {% for product in products %}
+                <div class="col-lg-4 col-md-4 col-sm-4 p-5">
+                    <div class="single-new-arrival mb-50 text-center">
+                        <div class="popular-img" >
+                            {% if product.productvariation_set.first.image.url %}
+                                <a
+                                    href="{% url 'product_detail' product.category.slug product.slug %}">
+                                    
+                                    <img src="{{product.productvariation_set.first.image.url}}"
+                                    alt="product image" style="height: 200px !important; position: relative;">
+                                </a>
+                            {% else %}
+                                <a
+                                    href="{% url 'product_detail' product.category.slug product.slug %}">
+                                    
+                                    <img src="{{product.image.url}}"
+                                    alt="product image" style="height: 200px !important; position: relative;">
+                                </a>
+                            
+                            {% endif %}
+                            
+                            
+                            
+                        
+                            </div>
+                        <div class="popular-caption">
+                            <h3><a
+                                    href="{% url 'product_detail' product.category.slug product.slug %}">{{product.product_title}}</a>
+                            </h3>
+                            {% comment %} <h2><span class="vari-product-price-{{product.id}}">{{product.productvariation_set.first.price}}</span></h2>
+                                {% endcomment %}
+                                {% if product.productvariation_set.first.discount_price %}
+                                {% if product.on_sale %}
+                                <h2><span class="dis-product-price-{{product.id}}" id="price_to_add_in_cart-{{product.id}}" data-index="{{product.id}}">{{product.productvariation_set.first.discount_price}}</span>
+                                <span style="text-decoration: Line-Through !important" class="vari-product-price-{{product.id}}" id="vari-product-price" data-index="{{product.id}}" >{{product.productvariation_set.first.price}}</span>
+                                </h2>
+                                {% else %}
+                                <h2><span class="vari-product-price-{{product.id}}" id="price_to_add_in_cart-{{product.id}}" data-index="{{product.id}}">{{product.productvariation_set.first.price}}</span></h2>
+                                <br>
+                                {% endif %}
+
+                                {% else %}
+                                <h2><span class="vari-product-price-{{product.id}}">{{product.price}}</span></h2>
+                                <br>
+                                {% endif %}
+                                
+                            <div class="card_area">
+                                
+                                <div class="add_to_cart">
+                                    <input type='hidden' class="input-number prdouct_qty-{{product.id}}" type='' value="1" id="prdouct_qty" >
+                                    <input type="hidden" class="product_image-{{product.id}}" value="{{product.productvariation_set.first.image.url}}">
+                                    <input type="hidden" name="" id="product_id-{{product.id}}" value="{{product.id}}">
+                                    <input type="hidden" name="" id="product_url" value="{{request.path}}">
+                                    <input type="hidden" name="" id="product_title-{{product.id}}" value="{{product.product_title}}">
+                                    
+                                    <input type="hidden" name="" id="product_size-{{product.id}}" value="{{product.productvariation_set.first.size}}">
+                                    <input type="hidden" name="" id="product_colour-{{product.id}}" value="{{product.productvariation_set.first.colour}}">
+
+                                    
+                                    <a href="#"  data-url="{% url 'add_cart' product.id %}" data-index="{{product.id}}" id="addToCArtBtn" class="addToCArtBtn btn addToCArtBtn"><i class="fas fa-shopping-cart"></i></a>
+                                    <a href="#" class=" btn" data-url="{% url 'addto_wish_list' product.id %}"  class="like_us" id="wish_list"> <i class="ti-heart"></i> </a>
+
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+                {% else %}
+                <div class="mt-50">
+                    <div class=" mb-50 ">
+                        <h3>Sorry, No products found for this category.</h3>
+                    </div>
+                </div>
+                {% endif %}
+                </div>
+                    
+
+            </div>
+        </div>
+    </section>
+
+
+
+    {% include 'includes/footer.html' %}
+
+    {% endblock content %}

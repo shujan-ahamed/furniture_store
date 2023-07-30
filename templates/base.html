@@ -1,0 +1,88 @@
+{% load static %}
+<!doctype html>
+<html class="no-js" lang="zxx">
+
+<head>
+<meta charset="utf-8">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<title>Shop | eCommerce</title>
+<meta name="description" content="">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="shortcut icon" type="image/x-icon" href="{% static 'img/favicon.ico' %}">
+<!-- Bootstrap cdn  -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+
+<!-- PAYPAL BUTTON SCRIPT  -->
+<script src="https://www.paypal.com/sdk/js?client-id=AfdZH72NUv8Eq8MsmGNHD-Aptxtno_QSZq9rskQs-O6eIQGvGKDBjQBPKJ_uD0p3jy9TGpiZLxymgf-3&currency=USD"></script>
+
+<!-- GOOGLE_API_KEY  -->
+{% if '/' == request.path or 'profile' in request.path %}
+<script src="https://maps.googleapis.com/maps/api/js?key={{GOOGLE_API_KEY}}&libraries=places&callback=initAutoComplete" defer></script>
+{% endif %}
+
+<!--  sweet message  -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<!-- themefy cdn -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@icon/themify-icons@1.0.1-alpha.3/themify-icons.min.css">
+
+{% comment %} mat css  
+<!-- Compiled and minified CSS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+<!-- Compiled and minified JavaScript -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+{% endcomment %}
+<!-- <link rel="stylesheet" href="{% static 'css/owl.carousel.min.css' %}">
+
+<link rel="stylesheet" href="{% static 'css/flaticon.css' %}">
+<link rel="stylesheet" href="{% static 'css/progressbar_barfiller.css' %}">
+<link rel="stylesheet" href="{% static 'css/lightslider.min.css' %}">
+<link rel="stylesheet" href="{% static 'css/gijgo.css' %}">
+<link rel="stylesheet" href="{% static 'css/animate.min.css' %}">
+<link rel="stylesheet" href="{% static 'css/animated-headline.css' %}">
+<link rel="stylesheet" href="{% static 'css/magnific-popup.css' %">
+
+
+<link rel="stylesheet" href="{% static 'css/slick.css' %}">
+<link rel="stylesheet" href="{% static 'css/nice-select.css' %}"> -->
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+<link rel="stylesheet" href="{% static 'css/price_rangs.css' %}">
+<link rel="stylesheet" href="{% static 'css/fontawesome-all.min.css' %}">
+<link rel="stylesheet" href="{% static 'css/themify-icons.css' %}">
+<link rel="stylesheet" href="{% static 'css/custom.css' %}">
+<link rel="stylesheet" href="{% static 'css/slicknav.css'%}">
+
+
+<script src="{% static 'js/vendor/jquery-1.12.4.min.js' %}"></script>
+<script src="{% static 'js/vendor/modernizr-3.5.0.min.js' %}"></script>
+
+<script src="{% static 'js/owl.carousel.min.js' %}"></script>
+<script src="{% static 'js/wow.min.js' %}"></script>
+<script src="{% static 'js/slick.min.js' %}"></script>
+<script src="{% static 'js/lightslider.min.js' %}"></script>
+<script src="{% static 'js/price_rangs.js' %}"></script>
+<!-- <script src="{% static 'js/main.js' %}"></script> -->
+<!-- customjs -->
+<script src="{% static 'js/product_filter.js' %}"></script>
+<script src="{% static 'js/custom.js' %}"></script>
+
+<!-- font awwsome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.3.0/chart.min.js"></script>
+
+<!-- <script nonce="0b3a3bac-a4cc-450d-baaf-1d755b1682a0">
+    (function(w,d){!function(f,g,h,i){f[h]=f[h]||{};f[h].executed=[];f.zaraz={deferred:[],listeners:[]};f.zaraz.q=[];f.zaraz._f=function(j){return function(){var k=Array.prototype.slice.call(arguments);f.zaraz.q.push({m:j,a:k})}};for(const l of["track","set","debug"])f.zaraz[l]=f.zaraz._f(l);f.zaraz.init=()=>{var m=g.getElementsByTagName(i)[0],n=g.createElement(i),o=g.getElementsByTagName("title")[0];o&&(f[h].t=g.getElementsByTagName("title")[0].text);f[h].x=Math.random();f[h].w=f.screen.width;f[h].h=f.screen.height;f[h].j=f.innerHeight;f[h].e=f.innerWidth;f[h].l=f.location.href;f[h].r=g.referrer;f[h].k=f.screen.colorDepth;f[h].n=g.characterSet;f[h].o=(new Date).getTimezoneOffset();if(f.dataLayer)for(const s of Object.entries(Object.entries(dataLayer).reduce(((t,u)=>({...t[1],...u[1]})))))zaraz.set(s[0],s[1],{scope:"page"});f[h].q=[];for(;f.zaraz.q.length;){const v=f.zaraz.q.shift();f[h].q.push(v)}n.defer=!0;for(const w of[localStorage,sessionStorage])Object.keys(w||{}).filter((y=>y.startsWith("_zaraz_"))).forEach((x=>{try{f[h]["z_"+x.slice(7)]=JSON.parse(w.getItem(x))}catch{f[h]["z_"+x.slice(7)]=w.getItem(x)}}));n.referrerPolicy="origin";n.src="../../cdn-cgi/zaraz/sd0d9.js?z="+btoa(encodeURIComponent(JSON.stringify(f[h])));m.parentNode.insertBefore(n,m)};["complete","interactive"].includes(g.readyState)?zaraz.init():f.addEventListener("DOMContentLoaded",zaraz.init)}(w,d,"zarazData","script");})(window,document);
+</script> -->
+
+</head>
+
+
+{% block content %}
+
+    
+{% endblock content%}
+

@@ -1,0 +1,360 @@
+{% extends 'base.html' %}
+{% block content %}
+
+{% load static %}
+{% include 'includes/navbar.html' %}
+
+<main>
+
+    <div class="slider-area ">
+        <div class="slider-active">
+            <div class="single-slider hero-overly2  slider-height2 d-flex align-items-center slider-bg2">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-xl-6 col-lg-8 col-md-8">
+                            <div class="hero__caption hero__caption2">
+                                <h1 data-animation="fadeInUp" data-delay=".4s">Categories</h1>
+                                <nav aria-label="breadcrumb">
+                                    <ol class="breadcrumb">
+                                        <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+                                        <li class="breadcrumb-item"><a href="#">Categories</a></li>
+                                    </ol>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="category-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-7 col-lg-8 col-md-10">
+                    <div class="section-tittle mb-50">
+                        <h2>Shop with us</h2>
+                        <p>Browse from {{products.count}} latest items</p>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xl-3 col-lg-3 col-sm-3 col-md-4 ">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="small-tittle mb-45">
+                                <div class="ion"> <svg xmlns="http://www.w3.org/2000/svg"
+                                        xmlns:xlink="http://www.w3.org/1999/xlink" width="20px" height="12px">
+                                        <path fill-rule="evenodd" fill="rgb(27, 207, 107)"
+                                            d="M7.778,12.000 L12.222,12.000 L12.222,10.000 L7.778,10.000 L7.778,12.000 ZM-0.000,-0.000 L-0.000,2.000 L20.000,2.000 L20.000,-0.000 L-0.000,-0.000 ZM3.333,7.000 L16.667,7.000 L16.667,5.000 L3.333,5.000 L3.333,7.000 Z">
+                                        </path>
+                                    </svg>
+                                </div>
+                                <h4>Filter Product</h4>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="category-listing mb-50">
+                        <div class="categories-wrapper">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="list-group list-group-flush">
+                                        <h4>Category </h4>
+                                        <div class="list-group">
+                                            {% for category in categories %}
+                                            <li class="list-group-item" style="border: none;">
+                                                <input class="filter-checkbox" value="{{category.id}}" type="checkbox"
+                                                    data-filter="category">{{category.category_name}}</input> 
+                                            </li>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class=" col-12">
+                                    <h4>Sizes </h4>
+                                    <div class="list-group ist-group-flush">
+                                        {% for size in sizes %}
+                                        <li class="list-group-item" style="border: none;">
+                                            <input class="filter-checkbox" value="{{size.id}}" type="checkbox"
+                                                data-filter="size">{{size.title}}</input>
+                                        </li>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                                <div class=" col-12">
+                                    <h4>Colors </h4>
+                                    <div class="list-group ist-group-flush">
+                                        {% for colour in colours %}
+                                        <li class="list-group-item" style="border: none;">
+                                            <input class="filter-checkbox" value="{{colour.id}}" type="checkbox"
+                                                data-filter="colour">{{colour.title}}</input>
+                                        </li>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                                <!-- <div class="col-12">
+                                    <div class="select-categories">
+                                        <select class="form-select" name="select4">
+                                            <option value="">Price range</option>
+                                            <option value="">$10 to $20</option>
+                                            <option value="">$20 to $30</option>
+                                            <option value="">$50 to $80</option>
+                                            <option value="">$100 to $120</option>
+                                            <option value="">$200 to $300</option>
+                                            <option value="">$500 to $600</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div> -->
+                            </div>
+                            
+                            <div class="range-slider mt-50">
+                                <div class="small-tittle small-tittle2">
+                                    <h4>Price Range</h4>
+                                </div>
+                                <div class="range_item">
+
+                                    <input  type="range" min="{{min_max_price.price__min}}" max="{{min_max_price.price__max}}" class="" id="priceRange" oninput="maxAmount.value=this.value" />
+                                    <br><span>{{min_max_price.price__min}} - {{min_max_price.price__max}}</span>
+                                    <div class="d-flex align-items-center">
+                                        <div class="price_text">
+                                            <p>Price :</p>
+                                        </div>
+                                        <div class=" d-flex justify-content-center">
+                                            <input style="color: #FD8F5F; " type="number" class="form-control"  value="{{min_max_price.price__min}}" min="{{min_max_price.price__min}}" max="{{min_max_price.price__max}}" onkeyup="priceRange.value=this.value" id="maxAmount"  />
+                                        </div>
+                                        
+                                        <button class="priceRangeBtn btn-info">Filter</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="range-slider mt-50">
+                                <div class="small-tittle small-tittle2">
+                                    <h4>Price Range</h4>
+                                </div>
+                                <div class="range_item">
+
+                                    <input type="text" class="js-range-slider" value="" />
+                                    <div class="d-flex align-items-center">
+                                        <div class="price_text">
+                                            <p>Price :</p>
+                                        </div>
+                                        <div class="price_value d-flex justify-content-center">
+                                            <input type="text" class="js-input-from" id="amount" readonly />
+                                            <span>to</span>
+                                            <input type="text" class="js-input-to" id="amount" readonly />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="select-checkbox mt-30 mb-30">
+                                <div class="small-tittle">
+                                    <h4>Latest Product</h4>
+                                </div>
+                                <label class="container">Any
+                                    <input type="checkbox">
+                                    <span class="checkmark"></span>
+                                </label>
+                                <label class="container">Today
+                                    <input type="checkbox" checked="checked active">
+                                    <span class="checkmark"></span>
+                                </label>
+                                <label class="container">Last 2 days
+                                    <input type="checkbox">
+                                    <span class="checkmark"></span>
+                                </label>
+                                <label class="container">Last 5 days
+                                    <input type="checkbox">
+                                    <span class="checkmark"></span>
+                                </label>
+                                <label class="container">Last 10 days
+                                    <input type="checkbox">
+                                    <span class="checkmark"></span>
+                                </label>
+                                <label class="container">Last 15 days
+                                    <input type="checkbox">
+                                    <span class="checkmark"></span>
+                                </label>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="col-xl-9 col-lg-9 col-sm-9 col-md-8 ">
+
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="count-job mb-35">
+                                <span>{{products_count}} {% if products_count <= 1%}Product{% else %}Products{% endif %} found</span>
+
+                                        <div class="select-cat">
+                                            <span>Sort by</span>
+                                            <select name="select">
+                                                {% for category in categories %}
+                                                <option value="">{{category}}</option>
+                                                {% endfor %}
+                                                
+                                            </select>
+                                        </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="ajaxLoader">Loading ...</div>
+                    <div class="new-arrival new-arrival3" >
+                        <div class="row" id="filtered_products">
+                            {% for product in products %}
+                            <div class="col-xl-4 col-lg-6 col-md-6 col-sm-7 product-box">
+                                <div class="single-new-arrival mb-50 text-center">
+                                    <div class="popular-img" >
+                                        {% if product.productvariation_set.first.image.url %}
+                                            <a
+                                                href="{% url 'product_detail' product.category.slug product.slug %}">
+                                                
+                                                <img src="{{product.productvariation_set.first.image.url}}"
+                                                alt="product image" style="height: 200px !important; position: relative;">
+                                            </a>
+                                        {% else %}
+                                            <a
+                                                href="{% url 'product_detail' product.category.slug product.slug %}">
+                                                
+                                                <img src="{{product.image.url}}"
+                                                alt="product image" style="height: 200px !important; position: relative;">
+                                            </a>
+                                        
+                                        {% endif %}
+                                        
+                                        
+                                        
+                                    
+                                        </div>
+                                    <div class="popular-caption">
+                                        <h3><a
+                                                href="{% url 'product_detail' product.category.slug product.slug %}">{{product.product_title}}</a>
+                                        </h3>
+                                        {% comment %} <h2><span class="vari-product-price-{{product.id}}">{{product.productvariation_set.first.price}}</span></h2>
+                                         {% endcomment %}
+                                         {% if product.productvariation_set.first.discount_price %}
+                                         {% if product.on_sale %}
+                                         <h2><span class="dis-product-price-{{product.id}}" id="price_to_add_in_cart-{{product.id}}" data-index="{{product.id}}">{{product.productvariation_set.first.discount_price}}</span>
+                                         <span style="text-decoration: Line-Through !important" class="vari-product-price-{{product.id}}" id="vari-product-price" data-index="{{product.id}}" >{{product.productvariation_set.first.price}}</span>
+                                         </h2>
+                                         {% else %}
+                                         <h2><span class="vari-product-price-{{product.id}}" id="price_to_add_in_cart-{{product.id}}" data-index="{{product.id}}">{{product.productvariation_set.first.price}}</span></h2>
+                                         <br>
+                                         {% endif %}
+
+                                         {% else %}
+                                         <h2><span class="vari-product-price-{{product.id}}">{{product.price}}</span></h2>
+                                         <br>
+                                         {% endif %}
+                                         
+                                        <div class="card_area">
+                                            
+                                            <div class="add_to_cart">
+                                                <input type='hidden' class="input-number prdouct_qty-{{product.id}}" type='' value="1" id="prdouct_qty" >
+                                                <input type="hidden" class="product_image-{{product.id}}" value="{{product.productvariation_set.first.image.url}}">
+                                                <input type="hidden" name="" id="product_id-{{product.id}}" value="{{product.id}}">
+                                                <input type="hidden" name="" id="product_url" value="{{request.path}}">
+                                                <input type="hidden" name="" id="product_title-{{product.id}}" value="{{product.product_title}}">
+                                                
+                                                <input type="hidden" name="" id="product_size-{{product.id}}" value="{{product.productvariation_set.first.size}}">
+                                                <input type="hidden" name="" id="product_colour-{{product.id}}" value="{{product.productvariation_set.first.colour}}">
+
+                                                
+                                                <a href="#"  data-url="{% url 'add_cart' product.id %}" data-index="{{product.id}}" id="addToCArtBtn" class="addToCArtBtn btn addToCArtBtn"><i class="fas fa-shopping-cart"></i></a>
+                                                <a href="#" class=" btn" data-url="{% url 'addto_wish_list' product.id %}"  class="like_us" id="wish_list"> <i class="ti-heart"></i> </a>
+
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        
+                    </div>
+                    {% if products %}
+                    
+                    <div class="row justify-content-center">
+                        <div class="room-btn mt-20">
+                            <button id="loadmore" data-total="{{total_products}}" data-limit="3" href=""  class="border-btn btn">Browse More
+                                <span><i id="icon-rotate" class="fa fa-refresh"></i></span>
+                                
+                            </button>
+                        </div>
+                    </div>
+                    {% endif %}
+                    
+                </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="categories-area section-padding40 gray-bg">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-3 col-md-6 col-sm-6">
+                        <div class="single-cat mb-50 wow fadeInUp" data-wow-duration="1s" data-wow-delay=".2s">
+                            <div class="cat-icon">
+                                <img src="{% static 'img/icon/services1.svg' %}" alt="">
+                            </div>
+                            <div class="cat-cap">
+                                <h5>Fast & Free Delivery</h5>
+                                <p>Free delivery on all orders</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6 col-sm-6">
+                        <div class="single-cat mb-50 wow fadeInUp" data-wow-duration="1s" data-wow-delay=".2s">
+                            <div class="cat-icon">
+                                <img src="{% static 'img/icon/services2.svg' %}" alt="">
+                            </div>
+                            <div class="cat-cap">
+                                <h5>Secure Payment</h5>
+                                <p>Free delivery on all orders</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6 col-sm-6">
+                        <div class="single-cat mb-50 wow fadeInUp" data-wow-duration="1s" data-wow-delay=".4s">
+                            <div class="cat-icon">
+                                <img src="{% static 'img/icon/services3.svg' %}" alt="">
+                            </div>
+                            <div class="cat-cap">
+                                <h5>Money Back Guarantee</h5>
+                                <p>Free delivery on all orders</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6 col-sm-6">
+                        <div class="single-cat mb-50 wow fadeInUp" data-wow-duration="1s" data-wow-delay=".5s">
+                            <div class="cat-icon">
+                                <img src="{% static 'img/icon/services4.svg' %}" alt="">
+                            </div>
+                            <div class="cat-cap">
+                                <h5>Online Support</h5>
+                                <p>Free delivery on all orders</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+</main>
+
+{% include 'includes/footer.html' %}
+
+
+{% endblock content %}
